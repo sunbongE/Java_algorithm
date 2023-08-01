@@ -42,6 +42,19 @@ map.forEach((key, value) -> copiedMap.put(key, value));
 if(Character.toString(c).equals(k)) 
 ```
 
+
+
+### char -> int
+
+`Character.getNumericValue( 문자타입입력 );`
+
+```java
+char as = '9';
+System.out.println(Character.getNumericValue(as)); // 9
+```
+
+
+
 ### 문자열에서 문자 배열로 만들기
 
 ```java
