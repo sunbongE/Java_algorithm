@@ -3,32 +3,39 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.PriorityQueue;
-import java.util.Scanner;
 
 public class Main {
-private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
 
     public static void main(String[] args) throws IOException {
-        int n = Integer.parseInt(br.readLine());
         StringBuilder sb = new StringBuilder();
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(bf.readLine());
 
-        PriorityQueue<Integer> minHeap = new PriorityQueue<>((o1, o2) -> o1 - o2);
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((o1, o2) -> o2 - o1);
+        PriorityQueue<Integer> minQ = new PriorityQueue<>();
+        PriorityQueue<Integer> maxQ = new PriorityQueue<>(Collections.reverseOrder());
 
-        for(int i = 0 ; i < n; i++){
-            int num = Integer.parseInt(br.readLine());
+        for (int i = 0; i < n; i++) {
 
-            if(minHeap.size() == maxHeap.size()) maxHeap.offer(num);
-            else minHeap.offer(num);
+            int num = Integer.parseInt(bf.readLine());
 
-            if(!minHeap.isEmpty() && !maxHeap.isEmpty())
-                if(minHeap.peek() < maxHeap.peek()){
-                    int tmp = minHeap.poll();
-                    minHeap.offer(maxHeap.poll());
-                    maxHeap.offer(tmp);
+            if(maxQ.size() > minQ.size()){
+                minQ.offer(num);
+            }else{
+                maxQ.offer(num);
+            }
+
+            if(!maxQ.isEmpty()&&!minQ.isEmpty()){
+
+                if(maxQ.peek() > minQ.peek() ){
+                    int tmp = minQ.poll();
+                    minQ.offer(maxQ.poll());
+                    maxQ.offer(tmp);
                 }
 
-            sb.append(maxHeap.peek() + "\n");
+            }
+            sb.append(maxQ.peek()+"\n");
         }
         System.out.println(sb);
-    }}
+    }
+}
