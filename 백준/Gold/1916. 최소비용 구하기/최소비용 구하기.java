@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,8 +26,8 @@ public class Main {
     }
 
     static int N,M;
-    static long INF = Integer.MAX_VALUE;
-    static long[] minCost;
+    static int INF = Integer.MAX_VALUE;
+    static int[] minCost;
     static Bus[] adjBus;
     public static void main(String[] args) throws IOException {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
@@ -34,7 +35,7 @@ public class Main {
         M = Integer.parseInt(bf.readLine());
 
         adjBus = new Bus[N+1]; // 인접한 버스들 기록.
-        minCost = new long[N + 1];
+        minCost = new int[N + 1];
         Arrays.fill(minCost,INF);
 
         StringTokenizer st;
@@ -53,10 +54,7 @@ public class Main {
 
         dijkstra(start,end);
 
-
-//        System.out.println(Arrays.toString(minCost));
         System.out.println(minCost[end]);
-
     }
 
     private static void dijkstra(int start, int end){
@@ -73,10 +71,9 @@ public class Main {
             int cur = curBus.to;
             int cost = curBus.cost;
 
-            if(minCost[cur] < cost) {
-                //if(cur == end) break;
-                continue;
-            };
+            if(cur == end) break;
+            
+            if(minCost[cur] < cost) continue;
 
             for(Bus next = adjBus[cur] ; next!=null; next=next.nextBus){
                 int nextCost = cost + next.cost;
@@ -85,16 +82,6 @@ public class Main {
                     pq.offer(new Bus(next.to,nextCost,next));
                 }
             }
-
-
-
-
-
         }
-
-
-
     }
-
-
 }
