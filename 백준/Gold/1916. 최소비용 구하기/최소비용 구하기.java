@@ -74,7 +74,7 @@ public class Main {
             int cost = curBus.cost;
 
             if(minCost[cur] < cost) {
-                if(cur == end) break;
+                //if(cur == end) break;
                 continue;
             };
 
