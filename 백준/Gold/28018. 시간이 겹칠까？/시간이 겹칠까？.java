@@ -7,10 +7,10 @@ import java.util.StringTokenizer;
 
 // 누적합.
 public class Main {
-    public static void main(String[] args) throws IOException {
+      public static void main(String[] args) throws IOException {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(bf.readLine());
-    
+//        int table[] = new int[10];
         int table[] = new int[1000010];
 
         StringTokenizer st;
@@ -35,11 +35,14 @@ public class Main {
 //        int[] queryArr = new int[Q];
 
         st = new StringTokenizer(bf.readLine());
+        
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i<Q;i++){
             int query = Integer.parseInt(st.nextToken());
-            System.out.println(table[query]);
+            sb.append(table[query]+"\n");
             //            queryArr[i] = query;
         }
+        System.out.println(sb);
 
 
     }
