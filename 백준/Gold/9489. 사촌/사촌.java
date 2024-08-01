@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -6,7 +5,6 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
@@ -16,34 +14,51 @@ public class Main {
             int n = Integer.parseInt(st.nextToken());
             int k = Integer.parseInt(st.nextToken());
 
-            if(n==0&&k==0){
-                break;
-            }
+            if(n==0&&k==0) break;
 
-            int targetIdx = 0;
-            int[] arr = new int[n+1];
-            int[] parent = new int[n+1];
-            int parentNumber = -1;
-            parent[0] = -1;
+            int[] parents = new int[n + 1];
+            int[] arr = new int[n + 1];
+            parents[0] = -1;
             arr[0] = -1;
 
+            int targetIdx = 0;
+            int parentNo = -1;
+
             st = new StringTokenizer(br.readLine());
-            for(int i=1; i<=n;i++){
-                arr[i] = Integer.parseInt(st.nextToken());
-                if(arr[i] == k ) targetIdx = i;
-                if(arr[i] != arr[i-1]+1) parentNumber++;
-                parent[i] = parentNumber;
-            }
-            int answer = 0 ;
-            for (int i = 1; i <=n; i++) {
-                if(parent[i] != parent[targetIdx] && parent[parent[i]] == parent[parent[targetIdx]]){
-                    answer++;
+            int inp;
+            for (int i = 1; i <= n; i++) {
+                inp = Integer.parseInt(st.nextToken());
+
+                if (inp - arr[i - 1] != 1) {
+//                System.out.println(arr[i-1]+" - "+inp);
+                    parentNo++;
                 }
+
+                if (inp == k) targetIdx = i;
+
+                arr[i] = inp;           // 입력 값 기록
+                parents[i] = parentNo;  // 부모 번호 기록
             }
-//            System.out.println("parent => "+ Arrays.toString(parent));
-//            System.out.println("arr => "+ Arrays.toString(arr));
-            sb.append(answer+"\n");
+
+            int cnt=0;
+            for (int i = 1; i <= n; i++) {
+
+                // 부모가 같지 않고, 부모의 부모가 같은거
+                if(parents[targetIdx] != parents[i] && parents[parents[targetIdx]] == parents[parents[i]]){
+                    cnt++;
+//                    System.out.println(parents[targetIdx]+" != "+parents[i]+" => "+arr[targetIdx]+", "+arr[i]);
+//                    System.out.println(parents[parents[targetIdx]]+" == "+parents[parents[i]]);
+                }
+
+            }
+
+            sb.append(cnt+"\n");
+
+//            System.out.println(Arrays.toString(arr));
+//            System.out.println(Arrays.toString(parents));
         }
         System.out.println(sb);
+
+
     }
 }
