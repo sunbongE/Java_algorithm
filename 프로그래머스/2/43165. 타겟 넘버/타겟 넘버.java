@@ -1,22 +1,18 @@
 class Solution {
-    boolean[] visited;
-    int ans=0;
-    int N;
-    int[] nums;
     public int solution(int[] numbers, int target) {
-        visited = new boolean[numbers.length];
-        this.N = numbers.length;
-        this.nums = numbers;
-        dfs(0,0,target); //idx, 현재 빼거나 더한 값
-        return ans;
+        int answer = 0;
+        answer = dfs(numbers, 0, 0, target);
+        return answer;
     }
-    private void dfs(int idx, int t,int target){
-        if(idx >= N){
-            if(t==target) ans++;
-            return;
+    int dfs(int[] numbers, int n, int sum, int target) {
+        if(n == numbers.length) {
+            if(sum == target) {
+                return 1;
+            }
+            return 0;
         }
-        
-        dfs(idx+1, t+nums[idx],target);
-        dfs(idx+1, t-nums[idx],target);
+        int result1 = dfs(numbers, n + 1, sum + numbers[n], target) ;
+          int result2 =   dfs(numbers, n + 1, sum - numbers[n], target);
+        return result1+result2;
     }
 }
