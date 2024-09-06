@@ -29,8 +29,8 @@ public class Main {
     }
 
     private static void permutation(int cnt) {
-        if (cnt == M) {
-//            System.out.println(Arrays.toString(per));
+       // 기저조건 : M개만큼 선택하면 리턴한다.
+        if(cnt==M){
             for (int num : per) {
                 sb.append(num+" ");
             }
@@ -38,15 +38,14 @@ public class Main {
             return;
         }
 
-        for (int i = 1; i <= N; i++) {        // 정해진 수의 범위 내에서 순회
+        // 정해진 수 중에서 선택할지 말지 결정한다.
+        for (int i = 1; i <= N; i++) {
 
-            if(isSelected[i]) continue;     // 이미 선택한 숫자라면 넘어간다.
-
-            isSelected[i] = true;           // 선택한 경우
-            per[cnt] = i;                    // 선택한 숫자를 기록한다.
-            permutation(cnt+1);       // 선택된 수를 늘리고 넘어간다.
-            isSelected[i] = false;          // 선택 안 한 경우
-
+            if(isSelected[i]) continue;
+            isSelected[i] = true;
+            per[cnt] = i;
+            permutation(cnt+1);
+            isSelected[i] = false;
         }
     }
 }
