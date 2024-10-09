@@ -7,7 +7,7 @@ function solution(phone_book) {
     
     for( let tmp of phone_book){
         for(let i =1 ; i<tmp.length;i++){
-            if(map.has(tmp.substr(0,i))){
+            if(map.has(tmp.substring(0,i))){
                 return false;
             }
         }
