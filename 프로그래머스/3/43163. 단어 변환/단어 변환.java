@@ -1,51 +1,88 @@
 import java.util.*;
-
 class Solution {
+    static int changeCnt, matchedCnt,answer;
+    static boolean v[], matched[];
+    static String start, end, data[];
     public int solution(String begin, String target, String[] words) {
-        // target이 words에 없는 경우 변환 불가
-        if(!Arrays.asList(words).contains(target)) return 0;
-
-        // BFS를 위한 큐 선언
-        Queue<WordNode> queue = new LinkedList<>();
-        queue.offer(new WordNode(begin, 0)); // 시작 단어와 변환 횟수
+        answer = 0;
         
-        boolean[] visited = new boolean[words.length];
+        // target으로 변환될 수 있는지를 확인한다.
+        boolean isValidData = checkWords(target,words);
+        if(!isValidData) return answer;
+        
+        start = begin;
+        end = target;
+        data = words;
+        
+        changeCnt = matchedCnt = 0;
+        
+        v = matched = new boolean[words.length];
+        answer = Integer.MAX_VALUE;
+        
 
-        while(!queue.isEmpty()) {
-            WordNode current = queue.poll();
-            
-            // target 단어에 도달하면 현재까지의 변환 횟수 반환
-            if(current.word.equals(target)) return current.step;
-
-            // words 배열에서 하나씩 비교하여 1글자만 다른 경우 큐에 추가
-            for(int i = 0; i < words.length; i++) {
-                if(!visited[i] && getChangeCnt(current.word, words[i]) == 1) {
-                    visited[i] = true;
-                    queue.offer(new WordNode(words[i], current.step + 1));
-                }
+        // dfs를 사용해서 각 단어를 살펴본다.
+        
+        dfs(0, data.length, 0, start);
+                
+        return answer;
+    }
+    
+    private void dfs(int n, int N, int cnt,String tmp){
+        if(n>=N){ // 전부 둘러봤다면
+            // 현재 cnt한거랑 정답이 될거 둘중 작은거를 answer에 갱신한다.
+            if(tmp.equals(end)){
+                answer = (answer > cnt) ? cnt : answer;
             }
+            return; // 리턴
         }
         
-        return 0; // target으로 변환할 수 없는 경우
-    }
+        if(cnt > answer) return;
+        
+        
+        for(int i = 0; i<data.length; i++){
+            if(v[i]) continue; // 이미 바뀐 이력이 있으면 넘어가기.
+            
+            // 지금 단어랑 바뀔 단어의 변화되는 알파벳 수가 1개인지 확인한다.
+            int changAlpaCnt = getChangeCnt(data[i],tmp);
+            if(changAlpaCnt != 1) continue; // 바뀌는 단어의 개수가 1개가 아니면 넘어가
+  
+               
+            // 현재 단어로 변경한다.
+            v[i] = true;
+            if(data[i].equals(end)){
+                dfs(N, N, cnt+1, data[i]);
+            }else{
+                dfs(n+1, N, cnt+1, data[i]);
+            }
+            v[i] = false;
+            
+            // 변경안한다.         
+            // dfs(n+1, N, cnt, tmp);
+        
+        }
 
-    // 다른 자리수 개수를 리턴하는 함수
-    private int getChangeCnt(String word1, String word2) {
-        int cnt = 0;
-        for(int i = 0; i < word1.length(); i++) {
-            if(word1.charAt(i) != word2.charAt(i)) cnt++;
+        
+        return;
+        
+    }
+               
+
+    
+    private Integer getChangeCnt(String next, String tmp){
+        // 다른 자리수 개수 리턴
+        int cnt=0;
+        for(int i=0; i<tmp.length(); i++){
+            if(next.charAt(i) != tmp.charAt(i)) cnt++;
         }
         return cnt;
     }
-
-    // 단어와 변환 횟수를 담는 클래스
-    class WordNode {
-        String word;
-        int step;
-
-        WordNode(String word, int step) {
-            this.word = word;
-            this.step = step;
+    
+    private boolean checkWords(String target, String[] words){
+        for(String word : words){
+            if(word.equals(target)){
+                return true;
+            }
         }
+        return false;
     }
 }
