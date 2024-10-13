@@ -1,47 +1,46 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
+import java.io.*;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int N,S;
-    static long sumArr[],arr[] ;
-
+    static int n,S;
     public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-
-        StringTokenizer st = new StringTokenizer(bf.readLine());
-
-        N = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
         S = Integer.parseInt(st.nextToken());
 
-        arr = new long[N+1];
-        st = new StringTokenizer(bf.readLine());
-        for (int i = 0; i < N; i++) {
-            arr[i] = Long.parseLong(st.nextToken());
-        }
+        int[] data = new int[n+1];
 
-        int start=0;
-        int end =0;
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i++) {
+            data[i] =Integer.parseInt(st.nextToken());
+        }
+//        System.out.println(Arrays.toString(data));
+
+        int s=0;
+        int e=0;
+        int cnt = Integer.MAX_VALUE;
         long sum=0;
-        int ans = Integer.MAX_VALUE;
-        while(start<= N && end <= N){ // 두 포인터가 범위 내
-            if(sum>=S && ans > end-start){
-                ans = end-start;
+        // 두 포인터가 범위에 있을때 반복.
+        while(s<=n && e <= n){
+            if(sum >= S && cnt > e-s){
+                cnt = e-s;
             }
+            if(sum<S){ // 값이 작으면 e가 있는 위치의 값을 sum에 더하고 다음 위치로 이동하낟.
+                sum+=data[e++];
+            }else{ // 값이 크면 s에 있는 위치를 sum에서 빼준다.
+                sum-=data[s++];
 
-            if(sum<S){
-                sum+= arr[end++];
-            }else{
-                sum -= arr[start++];
             }
-
         }
 
-        System.out.println((ans==Integer.MAX_VALUE)?0:ans);
-    }
+        System.out.println((cnt==Integer.MAX_VALUE)?0:cnt);
 
+
+    }
 
 }
