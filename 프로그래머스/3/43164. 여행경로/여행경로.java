@@ -2,7 +2,7 @@ import java.util.*;
 
 class Solution {
     // 출발지와 도착지의 우선순위를 관리하는 HashMap
-    HashMap<String, PriorityQueue<Ticket>> info = new HashMap<>();
+    HashMap<String, PriorityQueue<String>> info = new HashMap<>();
     ArrayList<String> answer;
     final String START = "ICN"; // 시작점
     
@@ -15,14 +15,7 @@ class Solution {
             String to = ticket[1];    // 도착지
             
             // 출발지가 이미 존재하면 해당 출발지의 우선순위 큐에 추가
-            if (info.containsKey(from)) {
-                info.get(from).offer(new Ticket(to, false));
-            } else {
-                // 출발지가 없다면 새로운 우선순위 큐를 만들어서 추가
-                PriorityQueue<Ticket> pq = new PriorityQueue<>();
-                pq.offer(new Ticket(to, false));
-                info.put(from, pq);
-            }
+            info.computeIfAbsent(from, k -> new PriorityQueue<>()).offer(to);
         }
         
         // DFS 방식으로 경로 탐색
@@ -36,27 +29,9 @@ class Solution {
     private void dfs(String cur) {
         // 현재 위치에서 가능한 모든 경로를 순차적으로 탐색 (사전순으로 자동 정렬됨)
         while (info.containsKey(cur) && !info.get(cur).isEmpty()) {
-            Ticket nextTicket = info.get(cur).poll();
-            dfs(nextTicket.to);  // 재귀적으로 다음 경로 탐색
+            dfs(info.get(cur).poll());  // 재귀적으로 다음 경로 탐색
         }
         // 경로를 역순으로 쌓아가야 하므로 마지막에 추가
         answer.add(0, cur);
-    }
-
-    // 티켓 정보를 담은 클래스
-    public class Ticket implements Comparable<Ticket> {
-        String to;       // 도착지
-        boolean isUsed;  // 사용 여부 (DFS에서 경로 추적용)
-
-        public Ticket(String to, boolean isUsed) {
-            this.to = to;
-            this.isUsed = isUsed;
-        }
-
-        // 도착지를 사전순으로 정렬하기 위한 compareTo 메서드
-        @Override
-        public int compareTo(Ticket o) {
-            return this.to.compareTo(o.to);
-        }
     }
 }
