@@ -12,6 +12,7 @@ public class Main {
         int n = Integer.parseInt(br.readLine());
 
         cv = new boolean[n];
+        rv = new boolean[n];
         drv = new boolean[n*2];
         dlv = new boolean[n*2];
 
@@ -29,12 +30,14 @@ public class Main {
 
         // 조건에 맞으면 놓으셈
         for (int i = 0; i < N; i++) {
-            if(!cv[i] && !dlv[n+i] && !drv[n-i+N]){
+            if(!cv[i] && !rv[i] && !dlv[n+i] && !drv[n-i+N]){
+                rv[i] = true;
                 cv[i] = true;
                 dlv[n+i] = true;
                 drv[n-i+N]  = true;
                 dfs(n+1,N);
                 cv[i] = false;
+                rv[i] = false;
                 dlv[n+i] = false;
                 drv[n-i+N]  = false;
             }
