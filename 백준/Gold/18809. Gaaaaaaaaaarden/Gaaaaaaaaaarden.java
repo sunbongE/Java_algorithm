@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -97,25 +96,29 @@ public class Main {
         // 각 초마다 맵의 변화를 감시.
         while (!q.isEmpty()) {
 
-            Info cur = q.poll();
+            Info cur = q.poll(); // 현재 위치
             int ci = cur.ci, cj = cur.cj;
-            if (tmp[ci][cj] >= RED + GREEN) continue;
+            if (tmp[ci][cj] >= RED + GREEN) continue; // 현 위치가 꽃이면 더이상 퍼지지않게한다.
 
-            for (int dir = 0; dir < 4; dir++) {
+            for (int dir = 0; dir < 4; dir++) { // 4방향으로 퍼질 수 있는 곳을 찾기.
                 int ni = ci + di[dir];
                 int nj = cj + dj[dir];
-                // 범위내, 이동할 위치가 처음이거나 같은 시간대에 이동한거면, 이동가능이면.
+
+                // 범위내, 이동할 위치가 처음이거나 같은 시간대에 이동한거면, && 호수가 아니면!
                 if (isIn(ni, nj) && (v[ni][nj] == 0 || v[ni][nj] == cur.time + 1) && tmp[ni][nj] != 0) {
-                    // 만약 값이 v에 표시된 값이 0이거나 나랑 다른값이면
+                    // 이미 같은 종류의 배양액이 있는경우 넘어가자~
                     if (tmp[ni][nj] == cur.color) continue;
 
-                    v[ni][nj] = cur.time + 1;
-                    if (tmp[ni][nj] == 1 || tmp[ni][nj] == 2) {
-                        tmp[ni][nj] = cur.color;
-                    } else {
+                    v[ni][nj] = cur.time + 1; // 이동하는데 1초가 걸린다.
+
+                    if (tmp[ni][nj] == 1 || tmp[ni][nj] == 2) { // 이동 가능한 위치라면 이동
+                        tmp[ni][nj] = cur.color;    // 값을 배양액 색으로 대입하기.
+                    } else { // 다른 배양액이 들어와있다면, 더해서 꽃을 만들자.
+                        if(tmp[ni][nj] == GREEN+RED) continue;
                         tmp[ni][nj] += cur.color;
                     }
-                    if (tmp[ni][nj] == RED + GREEN) { // 꽃이면 개수
+
+                    if (tmp[ni][nj] == RED + GREEN) { // 꽃이 피었을 때 개수 증가.
                         cnt++;
                     } else { // 아니면 다음에 또 퍼지도록
                         q.offer(new Info(ni, nj, cur.time + 1, cur.color));
