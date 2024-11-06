@@ -2,7 +2,7 @@ import java.util.*;
 class Solution {
     /**
     길이가 2이상의 짝수다.
-    모든 수열 집합의 교집합은 1개 이상이다.
+    수열 집합의 교집합은 1개 이상이다.
     같은 집합의 앞뒤 수는 다르다.
     리턴 : 가장 긴 스타 수열의 길이 || 없으면 0
     n이 50만으로 조합, dfs 불가능.
@@ -44,36 +44,45 @@ class Solution {
             }
             
         }
-        
+        boolean f1=true,f2=true;
         for(int i=0;i<cntArr.length;i++){
-            if(manyCnt == cntArr[i] || secondManyCnt== cntArr[i]){ // 가장 많이 사용된 개수인 수 찾기.
+            if(manyCnt == cntArr[i]){ // 가장 많이 사용된 개수인 수 찾기.
+                if(f1){
+                f1=false;                    
                 targets.add(i);
+                }
+            }else if(secondManyCnt== cntArr[i]){
+                if(f2) {
+                 targets.add(i);
+                    f2=false;
+                }
             }
+            if(!f1&&!f2) break;
         }
         // System.out.println(targets);System.out.println(secondManyCnt);
         
         
         int maxLen=0;
-        for(Integer manyNum:targets){
-        boolean[] v = new boolean[a.length];
-        int len = 0;    
-        
-        // 가장 많이 사용된 수를 기준으로 앞뒤 중 사용할 수 있는거 사용(우선순위 앞)
-        for(int i=0;i<a.length;i++){
-            
-            if(a[i] == manyNum){
-                // 앞에꺼 확인
-                if(isIn(i-1,a.length) && !v[i-1] && a[i-1]!=manyNum){
-                    v[i-1] = true;
-                    len+=2;
-                }else if(isIn(i+1,a.length) && !v[i+1] && a[i+1] != manyNum){
-                // 앞에 없으면 뒤에꺼 확인
-                    v[i+1] = true;
-                    len+=2;
+        for(Integer manyNum:targets){ // 2 최대 
+            boolean[] v = new boolean[a.length];
+            int len = 0;    
+
+            // 가장 많이 사용된 수를 기준으로 앞뒤 중 사용할 수 있는거 사용(우선순위 앞)
+            for(int i=0;i<a.length;i++){
+
+                if(a[i] == manyNum){
+                    // 앞에꺼 확인
+                    if(isIn(i-1,a.length) && !v[i-1] && a[i-1]!=manyNum){
+                        v[i-1] = true;
+                        len+=2;
+                    }else if(isIn(i+1,a.length) && !v[i+1] && a[i+1] != manyNum){
+                    // 앞에 없으면 뒤에꺼 확인
+                        v[i+1] = true;
+                        len+=2;
+                    }
                 }
             }
-        }
-            maxLen = Math.max(maxLen,len);
+                maxLen = Math.max(maxLen,len);
         }
         
         if(maxLen > 2){
