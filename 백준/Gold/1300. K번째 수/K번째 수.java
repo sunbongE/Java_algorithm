@@ -1,7 +1,8 @@
 import java.util.Scanner;
 
 public class Main {
-public static void main(String[] args) {
+
+    public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
 
         int n = scan.nextInt();
@@ -9,7 +10,7 @@ public static void main(String[] args) {
 
         int l = 1;
         int r = k;
-        int result = 0;
+//        int result = 0;
         while(l <= r) {
             int mid = (l + r) / 2;
             long count = 0;
@@ -24,10 +25,10 @@ public static void main(String[] args) {
                 l = mid + 1;
             } else {
                 r = mid - 1;
-                result = mid;
+//                result = mid;
             }
         }
-         System.out.println(result);
+        System.out.println(l);
     }
 }
 
