@@ -1,12 +1,12 @@
 # 자바 알고리즘 연습
 ## 오답 문제 큐
 
-| 문제 링크                            | 날짜     |
-| ------------------------------------ | -------- |
-| https://www.acmicpc.net/problem/3151 | 24.11.05 |
-| https://www.acmicpc.net/problem/1300 | 24.11.10 |
-| https://www.acmicpc.net/problem/2098 | 24.11.10 |
-| https://www.acmicpc.net/problem/2263 | 24.11.12 |
+| 문제 링크                            | 날짜     | 풀이 횟수 |
+| ------------------------------------ | -------- |0 |
+| https://www.acmicpc.net/problem/3151 | 24.11.05 |0 |
+| https://www.acmicpc.net/problem/1300 | 24.11.10 |0 |
+| https://www.acmicpc.net/problem/2098 | 24.11.10 |0 |
+| https://www.acmicpc.net/problem/2263 | 24.11.12 |0 |
 
 
 ## 알고리즘 문법 정리
