@@ -1,70 +1,87 @@
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
+/**
+ * 스택에는 오름차순의 높이가 올 수 있도록 한다.
+ * 이유 :
+ * <p>
+ * 높이가 낮아지면 이전에 있던 사각형의 넓이를 파악해서 최대값을 갱신한다.
+ * 갱신된 값은 버리고, 현재 값을 넣어 다음에 활용할 수 있게함.
+ * 이 과정을 배열을 모든 높이를 순회할때까지 반복
+ * 마지막으로 스택에 남아있는 높이들의 사각형 넓이를 구하고 최대값을 갱신한다.
+ */
 public class Main {
+    static int n, arr[];
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
-        int[] input = new int[N];
-
+        n = Integer.parseInt(br.readLine());
+        arr = new int[n];
         StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < N; i++) {
-            input[i] = Integer.parseInt(st.nextToken());
+        for (int i = 0; i < n; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
         }
-        Arrays.sort(input); // 배열 정렬
+        Arrays.sort(arr);
 
-        long cnt = 0; // 합이 0이 되는 경우의 수를 저장할 변수
+        long cnt = 0; // 3합이 0이되는 경우의수
 
-        // 투 포인터 알고리즘을 적용하여 합이 0이 되는 경우의 수를 찾음
-        for (int i = 0; i < N - 2; i++) {
-            int left = i + 1;
-            int right = N - 1;
+        for (int i = 0; i < n; i++) {
+            int cur = arr[i];
+            int s = i+1;
+            int e = n - 1;
+            while (s < e) {
+                // 같은 수를 두번 사용하는 경우 처리
+                if (i == s) {
+                    s++;
+                    continue;
+                } else if (e == i) {
+                    e--;
+                    continue;
+                }
+//                    System.out.println("i : "+i);
+//                    System.out.println(s+", "+e);
 
-            while (left < right) {
-                int sum = input[i] + input[left] + input[right];
+                int num1 = arr[s];
+                int num2 = arr[e];
+                int sum = cur + num1 + num2;
 
                 if (sum == 0) {
-                    int leftVal = input[left];
-                    int rightVal = input[right];
-
-                    // 동일한 값이 여러 개 있을 경우를 고려하여 같은 값의 쌍을 모두 계산
-                    if (leftVal == rightVal) {
-                        // left와 right 사이의 모든 값이 동일할 때
-                        int count = right - left + 1;
-                        cnt += count * (count - 1) / 2; // 조합 수를 더함
-                        break;
+                    if (num1 == num2) { // 두수가 같으면 사이에 같은 값의 개수를
+                        int sameCnt = e-s+1;
+                        cnt+= ((long) sameCnt *(sameCnt-1))/2; // 경우의수
+                        break; // 붙어있으니까 끝내버리자.
                     } else {
-                        // 서로 다른 경우 left와 right 값의 개수를 셈
-                        int leftCount = 1;
-                        int rightCount = 1;
-
-                        while (left + 1 < right && input[left + 1] == leftVal) {
-                            left++;
-                            leftCount++;
+                        int leftNumCnt = 1;
+                        int rightNumCnt = 1;
+                        while (!isOut(s + leftNumCnt) && arr[s + leftNumCnt - 1] == arr[s + leftNumCnt]) {
+                            leftNumCnt++;
                         }
+                        s += leftNumCnt;
 
-                        while (right - 1 > left && input[right - 1] == rightVal) {
-                            right--;
-                            rightCount++;
+                        while (!isOut(e - rightNumCnt) && arr[e - rightNumCnt + 1] == arr[e - rightNumCnt]) {
+                            rightNumCnt++;
                         }
+                        e -= rightNumCnt;
 
-                        cnt += leftCount * rightCount; // 가능한 조합 수를 더함
+                        cnt += ((long) leftNumCnt * rightNumCnt);
                     }
 
-                    left++;
-                    right--;
                 } else if (sum < 0) {
-                    left++;
+                    s++;
                 } else {
-                    right--;
+                    e--;
                 }
+
+
             }
         }
-
         System.out.println(cnt);
+
+
+    }
+
+    private static boolean isOut(int idx) {
+        return 0 > idx || n <= idx;
     }
 }
