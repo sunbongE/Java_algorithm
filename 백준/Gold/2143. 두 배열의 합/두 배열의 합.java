@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,7 +10,7 @@ public class Main {
     static long ans;
     static HashMap<Integer,Integer> map;
 
-    public static void main(String[] args) throws IOException {
+       public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 
@@ -63,11 +62,7 @@ public class Main {
             int sum=0; // key로 사용.
             for (int j = i; j < n; j++) {
                 sum += arr[j];
-                if(map.containsKey(sum)){
-                    map.put(sum,map.get(sum)+1);
-                }else{
-                    map.put(sum,1);
-                }
+                map.put(sum, map.getOrDefault(sum, 0) + 1);
             }
         }
     }
