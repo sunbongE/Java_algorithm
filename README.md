@@ -7,6 +7,7 @@
 | https://www.acmicpc.net/problem/1300 | 24.11.10 |0 |
 | https://www.acmicpc.net/problem/2098 | 24.11.10 |0 |
 | https://www.acmicpc.net/problem/2263 | 24.11.12 |0 |
+| https://www.acmicpc.net/problem/9465 | 24.12.02 |0 |
 
 
 ## 알고리즘 문법 정리
