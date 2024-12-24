@@ -8,6 +8,7 @@
 | https://www.acmicpc.net/problem/2098 | 24.11.10 |0 |
 | https://www.acmicpc.net/problem/2263 | 24.11.12 |0 |
 | [https://www.acmicpc.net/problem/9465](https://www.acmicpc.net/problem/9465) | 24.12.02 |0 |
+| [https://school.programmers.co.kr/learn/courses/30/lessons/12953#](https://school.programmers.co.kr/learn/courses/30/lessons/12953#) | 24.12.24 |0 |
 
 
 ## 알고리즘 문법 정리
