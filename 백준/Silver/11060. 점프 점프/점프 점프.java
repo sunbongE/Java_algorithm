@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,9 +6,9 @@ import java.util.*;
 /**
  * dp배열 생성 n개 만큼
  * 반복문 인덱스 1부터 시작하면 이전 자리 중에 현재 자리에 올 수 있는 자리를 파악
- * 올 수 있는 자리 => arr[i-j]+j >= i
- * 이중에 dp[i-j] 최소값 + 1 -> dp[i]
- * print(dp[n])
+ * 올 수 있는 자리 => arr[j]+j >= i
+ * 이중에 dp[j] 최소값 + 1 -> dp[i]
+ * print(dp[n-1])
  **/
 public class Main {
     static final int MAX = 10000;
