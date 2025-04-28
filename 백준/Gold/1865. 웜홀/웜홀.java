@@ -29,7 +29,7 @@ public class Main {
     static int tc;
     static List<int[]> li;
     public static void main(String[] args) throws IOException {
-  //      BufferedReader br = new BufferedReader(new FileReader("test.txt"));
+//        BufferedReader br = new BufferedReader(new FileReader("test.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
         tc = Integer.parseInt(br.readLine());
@@ -74,8 +74,10 @@ public class Main {
         Arrays.fill(times,INF);
         times[1] = 0;
 
-
-        for (int i = 0; i < N; i++) {
+        // N개의 정점에서 최단거리 구하기 위해 N-1개의 간선을 이동해야함.
+        // 하지만 여기서는 N번 순회하며 마지막은 음수 사이클 검증으로 함.
+        // 마지막 까지도 최소값이 갱신된다면 음의 사이클이 존재한다고 생각해도된다.
+        for (int i = 0; i < N; i++) { 
             for (int j = 0; j < li.size(); j++) {
                 int[] data = li.get(j);
                 int s = data[0];
