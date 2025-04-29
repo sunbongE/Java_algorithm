@@ -23,21 +23,19 @@ import java.util.*;
  *
  * */
 public class Main {
-    static int n,m,path[];
-    static long costs[];
+    static int n,m,path[], MAX = 100000;
+    static int costs[];
     static ArrayList<Way> ways;
-    static boolean hasCycle=false;
+    static boolean nInCycle=false;
     public static void main(String[] args) throws IOException {
-//         BufferedReader br = new BufferedReader(new FileReader("test.txt"));
-       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+  //      BufferedReader br = new BufferedReader(new FileReader("test.txt"));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
 
         ways = new ArrayList();
-        costs = new long[n+1];
 
-        Arrays.fill(costs,Integer.MIN_VALUE);
 
         for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
@@ -47,10 +45,11 @@ public class Main {
             ways.add(new Way(a,b,c));
         }
 
-        costs = new long[n+1];
+        costs = new int[n+1];
+
         bellmanFord();
 
-        if(costs[n] == Integer.MAX_VALUE){
+        if(costs[n] == MAX){
             System.out.println(-1);
         }else{
             List<Integer> route = new ArrayList<>();
@@ -71,20 +70,20 @@ public class Main {
     }
 
     private static void bellmanFord() {
-        Arrays.fill(costs,(long) Integer.MIN_VALUE);
+        Arrays.fill(costs, -MAX);
         costs[1] = 0;
         path = new int[n+1];
 
         for (int i = 0; i < n; i++) {
             for(Way way : ways){
-                if(costs[way.from] == Integer.MIN_VALUE) continue;
-                long nCost = way.cost + costs[way.from];
+                if(costs[way.from] == -MAX) continue;
+                int nCost = way.cost + costs[way.from];
                 if(nCost > costs[way.to]){
                     costs[way.to] = nCost;
                     path[way.to] = way.from;
 
                     if(i == n-1 ){
-                        costs[way.to] = Integer.MAX_VALUE;
+                        costs[way.to] = MAX;
                     }
                 }
             }
