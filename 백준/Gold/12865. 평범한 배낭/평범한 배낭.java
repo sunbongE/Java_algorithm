@@ -9,7 +9,7 @@ public class Main {
     static int n,k,w,v;
     public static void main(String[] args) throws IOException {
        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-  //       BufferedReader br = new BufferedReader(new FileReader("test.txt"));
+      //   BufferedReader br = new BufferedReader(new FileReader("test.txt"));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         n = Integer.parseInt(st.nextToken());
@@ -30,10 +30,8 @@ public class Main {
         for (int i = 1; i <= n; i++) {
             int curW = W[i];
             int curV = V[i];
-            for (int j = k; j >0 ; j--) {
-                if(j >= curW){
+            for (int j = k; j >=curW ; j--) {
                     dp[j] = Math.max(dp[j-curW]+curV, dp[j]);
-                }
             }
 //            System.out.println(Arrays.toString(dp));
 
