@@ -100,7 +100,7 @@ public class Main {
             v[cur] = true;
             cycleTmp.add(cur);
             dfs(cur,next,v);
-            if(findCycle) break;
+            if(findCycle) return;
             cycleTmp.remove(cycleTmp.indexOf(cur));
             v[cur] = false;
 
