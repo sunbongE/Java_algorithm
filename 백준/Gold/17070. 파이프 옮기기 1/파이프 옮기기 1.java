@@ -16,15 +16,16 @@ import java.util.*;
  *
  * */
 public class Main {
-    //  오른, 아래, 대각
-    static int[] di = {0,1,1}, dj = {1,0,1};
     static int N;
     static int[][] map;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-   //     BufferedReader br = new BufferedReader(new FileReader("test.txt"));
+//        BufferedReader br = new BufferedReader(new FileReader("test.txt"));
         N = Integer.parseInt(br.readLine());
         map = new int[N][N];
+        int[][][] visitCnt = new int[N][N][3];
+        // 처음 가로방향 파이프.
+        visitCnt[0][1][0] = 1;
 
         StringTokenizer st ;
 
@@ -34,87 +35,26 @@ public class Main {
                 map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
-        if(map[N-1][N-1]==1) {
-            System.out.println(0);
-        }else{
-            
-        int ans = bfs(0,1);
-        System.out.println(ans);
-        }
 
-    }
+        for (int i = 0; i < N; i++) {
+            for (int j = 2; j < N; j++) {
+                // 벽
+                if(map[i][j] == 1 ) continue;
 
-    private static int bfs(int si, int sj) {
-        Queue<Pipe> q = new ArrayDeque<>();
-        int[][] v = new int[N][N];
-        v[si][sj]=1;
-        q.offer(new Pipe(0,new int[] {si,sj}));
+                // 가로 : 왼쪽 + 왼쪽대각위
+                visitCnt[i][j][0] = visitCnt[i][j-1][0] + visitCnt[i][j-1][2];
 
-        while(!q.isEmpty()){
-            Pipe cur = q.poll();
-            int ci = cur.posi[0];
-            int cj = cur.posi[1];
+                if(i < 1 ) continue; // 위에가 없으면
+                // 세로 : 위쪽 + 왼쪽대각위
+                visitCnt[i][j][1] = visitCnt[i-1][j][1] + visitCnt[i-1][j][2];
 
-            if(cur.direction == 0){// 가로
-                // 오른쪽
-                move(0,v,ci,cj,q);
-                // 대각
-                move(2,v,ci,cj,q);
-            }else if(cur.direction == 1){//세로
-                // 아래
-                move(1,v,ci,cj,q);
-                // 대각
-                move(2,v,ci,cj,q);
-            }else if(cur.direction==2){//대각
-                // 오른쪽
-                move(0,v,ci,cj,q);
-                // 아래
-                move(1,v,ci,cj,q);
-                // 대각
-                move(2,v,ci,cj,q);
-            }
-//            System.out.println("==================");
-//            for (int i = 0; i < v.length; i++) {
-//                System.out.println(Arrays.toString(v[i]));
-//            }
-
-        }
-
-
-        return v[N-1][N-1];
-    }
-
-    private static void move(int dir, int[][] v, int ci, int cj, Queue<Pipe> q) {
-        boolean result = false;
-        int ni = ci + di[dir];
-        int nj = cj + dj[dir];
-        if(!isOut(ni,nj) && map[ni][nj]==0){
-            if(dir == 2){ // 대각선인경우 위,왼 확인해서 벽이 있는지 확인한다.
-                if(map[ni-1][nj]!=1 && map[ni][nj-1]!=1){
-                    result = true;
-                    v[ni][nj]++;
-                }
-            }else{
-                result = true;
-                v[ni][nj]++;
+                // 대각선 : 왼쪽 + 위쪽 + 왼쪽대각위
+                if(map[i-1][j] == 1 || map[i][j-1] == 1) continue; // 왼, 위에 벽이 없어야함.
+                visitCnt[i][j][2] = visitCnt[i-1][j-1][0] +visitCnt[i-1][j-1][1] +visitCnt[i-1][j-1][2] ;
             }
         }
 
-        if(result){ // 이동 되면.
-            q.offer(new Pipe(dir,new int[] {ni,nj}));
-        }
-    }
+        System.out.println(visitCnt[N-1][N-1][0] +visitCnt[N-1][N-1][1] +visitCnt[N-1][N-1][2] );
 
-    static boolean isOut(int ni, int nj){
-        return ni < 0 || ni >= N || nj < 0 || nj >= N;
-    }
-
-    static class Pipe{
-        int direction;
-        int[] posi;
-        public Pipe( int direction, int[] posi){
-            this.direction = direction;
-            this.posi = posi;
-        }
     }
 }
