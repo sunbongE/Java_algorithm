@@ -21,8 +21,8 @@ public class Main {
     static int N;
     static int[][] map;
     public static void main(String[] args) throws IOException {
-       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-  //       BufferedReader br = new BufferedReader(new FileReader("test.txt"));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+   //     BufferedReader br = new BufferedReader(new FileReader("test.txt"));
         N = Integer.parseInt(br.readLine());
         map = new int[N][N];
 
@@ -37,51 +37,54 @@ public class Main {
         if(map[N-1][N-1]==1) {
             System.out.println(0);
         }else{
-            System.out.println(bfs(0,1));
+            
+        int ans = bfs(0,1);
+        System.out.println(ans);
         }
 
     }
 
     private static int bfs(int si, int sj) {
         Queue<Pipe> q = new ArrayDeque<>();
+        int[][] v = new int[N][N];
+        v[si][sj]=1;
         q.offer(new Pipe(0,new int[] {si,sj}));
-        int cnt=0;
+
         while(!q.isEmpty()){
             Pipe cur = q.poll();
             int ci = cur.posi[0];
             int cj = cur.posi[1];
-            if(ci == N-1 && cj == N-1){
-                cnt++;
-                continue;
-            }
 
             if(cur.direction == 0){// 가로
                 // 오른쪽
-                move(0,ci,cj,q);
+                move(0,v,ci,cj,q);
                 // 대각
-                move(2,ci,cj,q);
+                move(2,v,ci,cj,q);
             }else if(cur.direction == 1){//세로
                 // 아래
-                move(1,ci,cj,q);
+                move(1,v,ci,cj,q);
                 // 대각
-                move(2,ci,cj,q);
+                move(2,v,ci,cj,q);
             }else if(cur.direction==2){//대각
                 // 오른쪽
-                move(0,ci,cj,q);
+                move(0,v,ci,cj,q);
                 // 아래
-                move(1,ci,cj,q);
+                move(1,v,ci,cj,q);
                 // 대각
-                move(2,ci,cj,q);
+                move(2,v,ci,cj,q);
             }
- 
+//            System.out.println("==================");
+//            for (int i = 0; i < v.length; i++) {
+//                System.out.println(Arrays.toString(v[i]));
+//            }
 
         }
 
 
-        return cnt;
+        return v[N-1][N-1];
     }
 
-    private static void move(int dir, int ci, int cj, Queue<Pipe> q) {
+    private static void move(int dir, int[][] v, int ci, int cj, Queue<Pipe> q) {
         boolean result = false;
         int ni = ci + di[dir];
         int nj = cj + dj[dir];
@@ -89,9 +92,11 @@ public class Main {
             if(dir == 2){ // 대각선인경우 위,왼 확인해서 벽이 있는지 확인한다.
                 if(map[ni-1][nj]!=1 && map[ni][nj-1]!=1){
                     result = true;
+                    v[ni][nj]++;
                 }
             }else{
                 result = true;
+                v[ni][nj]++;
             }
         }
 
