@@ -36,6 +36,10 @@ public class Main {
             }
         }
 
+        if(map[N-1][N-1] == 1){
+            System.out.println(0);
+            return;
+        }
         for (int i = 0; i < N; i++) {
             for (int j = 2; j < N; j++) {
                 // 벽
