@@ -65,7 +65,7 @@ public class Main {
         }
 
         while(k-- > 0){
-//            System.out.println(k+"년");
+ 
             ArrayList<Tree> tmp = new ArrayList<>();
 
             // 봄 : 나이먹기
@@ -74,14 +74,14 @@ public class Main {
                 Tree tree = pq.poll();
                 if(land[tree.ci][tree.cj] < tree.age){ // 양분못먹으면 죽음
                     tree.isDie = true;
-//                    System.out.println("죽음");
+ 
                 }else{ // 양분 먹이기
                     land[tree.ci][tree.cj] -= tree.age;
                     tree.age+=1;
                 }
                 tmp.add(tree);
             }
-//            System.out.println("봄 : "+tmp);
+ 
             ArrayList<Tree> liveT = new ArrayList<>();
             // 여름 : 죽은 나무가 양분으로 변함. += 나이/2
             for(Tree tree : tmp){
@@ -91,7 +91,7 @@ public class Main {
                     liveT.add(tree);
                 }
             }
-//            System.out.println("여름 : "+liveT);
+ 
             // 가을 : 나이가 5배수인 나무 주변에 1짜리 나무가 생긴다.
             for(Tree tree : liveT){
                 pq.offer(tree);
@@ -110,11 +110,7 @@ public class Main {
                 for (int j = 0; j < n; j++) {
                     land[i][j] += A[i][j];
                 }
-            }
-//            System.out.println("-- land --");
-//            for (int i = 0; i < land.length; i++) {
-//                Arrays.toString(land[i]);
-//            }
+            } 
         }
 
         System.out.println(pq.size());
@@ -133,12 +129,7 @@ public class Main {
             this.ci = ci;
             this.cj = cj;
             this.age = age;
-        }
-
-        @Override
-        public String toString(){
-            return "{ "+this.ci+", "+ this.cj+", "+this.age+" }";
-        }
+        } 
     }
 
 
