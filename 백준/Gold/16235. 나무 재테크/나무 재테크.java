@@ -33,7 +33,7 @@ public class Main {
     static PriorityQueue<Tree> pq;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-  //      BufferedReader br = new BufferedReader(new FileReader("test.txt"));
+    //    BufferedReader br = new BufferedReader(new FileReader("test.txt"));
         StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
@@ -51,6 +51,7 @@ public class Main {
             }
         }
 
+        // 단일인터페이스 람다로 정의
         pq = new PriorityQueue<>((a,b)->{
             return a.age-b.age;
         });
@@ -65,7 +66,6 @@ public class Main {
         }
 
         while(k-- > 0){
- 
             ArrayList<Tree> tmp = new ArrayList<>();
 
             // 봄 : 나이먹기
@@ -74,26 +74,22 @@ public class Main {
                 Tree tree = pq.poll();
                 if(land[tree.ci][tree.cj] < tree.age){ // 양분못먹으면 죽음
                     tree.isDie = true;
- 
                 }else{ // 양분 먹이기
                     land[tree.ci][tree.cj] -= tree.age;
                     tree.age+=1;
                 }
                 tmp.add(tree);
             }
- 
-            ArrayList<Tree> liveT = new ArrayList<>();
             // 여름 : 죽은 나무가 양분으로 변함. += 나이/2
             for(Tree tree : tmp){
                 if(tree.isDie){
                     land[tree.ci][tree.cj] += tree.age/2;
-                }else{
-                    liveT.add(tree);
                 }
             }
- 
+
             // 가을 : 나이가 5배수인 나무 주변에 1짜리 나무가 생긴다.
-            for(Tree tree : liveT){
+            for(Tree tree : tmp){
+                if(tree.isDie) continue;
                 pq.offer(tree);
                 if(tree.age % 5 != 0) continue;
                 int ci = tree.ci;
@@ -110,7 +106,8 @@ public class Main {
                 for (int j = 0; j < n; j++) {
                     land[i][j] += A[i][j];
                 }
-            } 
+            }
+
         }
 
         System.out.println(pq.size());
@@ -129,7 +126,7 @@ public class Main {
             this.ci = ci;
             this.cj = cj;
             this.age = age;
-        } 
+        }
     }
 
 
