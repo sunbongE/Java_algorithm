@@ -1,53 +1,60 @@
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
+
 public class Main {
+    static int n,m,arr[],ans;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+ //       BufferedReader br = new BufferedReader(new FileReader("test.txt"));
         StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());    // 집 개수
+        m = Integer.parseInt(st.nextToken());    // 공유기 개수
+        arr = new int[n];                       // 집 위치 배열
 
-        int N,C, arr[];
-        N = Integer.parseInt(st.nextToken());
-        C = Integer.parseInt(st.nextToken());
-        arr = new int[N];
-
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < n; i++) {
             arr[i] = Integer.parseInt(br.readLine());
         }
+
         Arrays.sort(arr);
 
-        int s = 0,e=arr[N-1],m;
-//        int ans = 0 ;
-        while(s<=e){
-            m = (s+e)/2;
-
-            int cnt = check(arr,m);
-//            System.out.println("s : "+s+", e : "+e + ", m : "+m+", cnt : "+cnt);
-
-            if(cnt < C){// 개수가 작으면 범위를 좁힌다.
-                e = m-1;
-            }else{
-
-                s=m+1;
-            }
-        }
-
-        System.out.println(s-1);
+        binarySearch();
+        System.out.println(ans);
     }
 
-    // 주어진 거리로 설치할 수 있는 공유기 개수를 반환하는 함수
-    private static int check(int[] arr, int distance) {
-        int cnt = 1;           // 첫 번째 집에 공유기를 설치하고 시작
-        int cur = arr[0];      // 첫 설치 집 위치
+    private static void binarySearch(){
+        int distance = 1;
+        int s = 1, e = arr[n-1]-arr[0];
+
+        while(s<=e){
+            int mid = (s+e)/2;
+
+            // mid = 임시로 설치해볼 거리.
+            int tmpCnt = getValidCnt(mid);
+
+            if(tmpCnt<m){ // m개보다 적음 : 거리를 줄인다.
+                e = mid-1;
+            }else{ // m개보다 많음
+                distance = mid; // 설치할 공유기 개수보다 많이 설치할 수 있는거는 노상관
+                s = mid+1;
+            }
+        }
+        ans = distance;
+    }
+
+    private static int getValidCnt(int mid) {
+//        System.out.println("mid : "+mid);
+        // 첫번째 집에 공유기 설치
+        int cnt = 1;
+        // 처음 시작위치.
+        int cur = arr[0];
 
         for (int i = 1; i < arr.length; i++) {
-            if (arr[i] - cur >= distance) {  // 현재 집에서 distance 이상의 거리가 있으면
-                cnt++;                       // 공유기 설치
-                cur = arr[i];                // 마지막 설치 위치 갱신
+            if(arr[i]-cur>=mid){
+//                System.out.println(arr[i]-cur);
+                cur = arr[i];
+                cnt++;
             }
         }
         return cnt;
