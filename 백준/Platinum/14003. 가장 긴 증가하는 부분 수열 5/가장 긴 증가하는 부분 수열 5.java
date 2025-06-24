@@ -4,7 +4,7 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) throws IOException {
          BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-//        BufferedReader br = new BufferedReader(new FileReader("test.txt"));
+    //    BufferedReader br = new BufferedReader(new FileReader("test.txt"));
         int n = Integer.parseInt(br.readLine());
         int[] arr = new int[n];
 
@@ -30,6 +30,9 @@ public class Main {
 
             if (idx == len) len++;
         }
+//        System.out.println("lisVal : "+Arrays.toString(lisVal));
+//        System.out.println("pos    : "+Arrays.toString(pos));
+//        System.out.println("pre    : "+Arrays.toString(pre));
 
         // 역추적
         int traceIdx = pos[len - 1];
@@ -40,9 +43,11 @@ public class Main {
         }
 
         // 출력
-        System.out.println(len);
+        StringBuilder sb = new StringBuilder();
+        sb.append(len+"\n");
         while (!stack.isEmpty()) {
-            System.out.print(stack.pop() + " ");
+            sb.append(stack.pop() + " ");
         }
+        System.out.println(sb);
     }
 }
