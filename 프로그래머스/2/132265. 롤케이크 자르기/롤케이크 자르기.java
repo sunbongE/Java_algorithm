@@ -36,7 +36,7 @@ class Solution {
             // 왼쪽 개수올림.
             if(set.add(cur)) leftCnt++;
             // 오른쪽 개수 변경
-            topping_cnt.put(cur, topping_cnt.getOrDefault(cur,0)-1);
+            topping_cnt.put(cur, topping_cnt.get(cur)-1);
             if(topping_cnt.get(cur) <= 0) rightCnt--;
             
             // 양쪽이 같으면 잘 분배한거
