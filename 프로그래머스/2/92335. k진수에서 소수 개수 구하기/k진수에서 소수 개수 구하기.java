@@ -22,18 +22,13 @@ class Solution {
         StringBuilder sb = new StringBuilder();
         set = new HashSet<>();
         
-        while(n>0){
-            sb.append(n%k);
-            n/=k;
-        }
-        sb.reverse();
-        String result = sb.toString();
+        
+        String result = Integer.toString(n,k);
         String[] nums = result.split("0");
         // 소수인지 확인
         for(int i=0; i<nums.length; i++){
             if(nums[i].isEmpty() ) continue;
             if(isPrime(Long.parseLong(nums[i])) && set.add(nums[i])){
-                System.out.println(nums[i]);
                
                 // 확인된 소수 P에 대해 점수 확인.
                 answer+=checkPoint(result, nums[i]);            
