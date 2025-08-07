@@ -1,55 +1,55 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-/**
- * 
- * @author 박승연
- * 
- *         이 문제는 무 적 권 DFS인듯 하다.
- * 
- *         매개변수에 리스트를 넘겨받으면서 리스트가 존재하는지도 체크를 해줘야한다.
- * 
- *         있으면 리턴각이 나왔다.
- *
- */
+import java.io.*;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
 public class Main {
-	static char[][] map;
-	static boolean[] alpa = new boolean[26];
-	static int[] dx = { -1, 1, 0, 0 };
-	static int[] dy = { 0, 0, -1, 1 };
-	static int R, C, ans;
+    static int[] di = {-1,1,0,0}, dj = {0,0,-1,1};
+    static int r,c,maxCnt=0;
+    static char[][] map;
+    public static void main(String[] args) throws IOException {
 
-	public static void main(String[] args) throws IOException {
-		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-		String inp[] = bf.readLine().split(" ");
-		R = Integer.parseInt(inp[0]);
-		C = Integer.parseInt(inp[1]);
-		map = new char[R][];
+        // 입력 세팅
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//        BufferedReader br = new BufferedReader(new FileReader(new File("./test.txt")));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-		for (int i = 0; i < R; i++) {
-			map[i] = bf.readLine().toCharArray();
-		}
-		dfs(0, 0,1);
-		
-		System.out.println(ans);
+        r = Integer.parseInt(st.nextToken());
+        c = Integer.parseInt(st.nextToken());
 
-	}
+        map = new char[r][c];
 
-	private static void dfs(int i, int j, int dis) {
-		ans = Math.max(dis, ans);
-		int ni = 0, nj = 0;
-		alpa[map[i][j] - 'A'] = true;
-		for (int di = 0; di < 4; di++) {// 4방향 둘러보다가 갈 수 있는 곳이고 처음 만나는 알파벳이면 가본다.
-			ni = i + dx[di];
-			nj = j + dy[di];
-			if (isIn(ni,nj) && !alpa[map[ni][nj]-'A']) {
-				dfs(ni, nj, dis+1);
-			}
-		}
-		alpa[map[i][j] - 'A'] = false;
-	}
+        for (int i = 0; i < r; i++) {
+            String input = br.readLine();
+            for (int j = 0; j < c; j++) {
+                map[i][j] = input.charAt(j);
+            }
+        }
 
-	private static boolean isIn(int ni, int nj) {
-		return 0<=ni && ni < R && 0<=nj && nj < C;
-	}
+        boolean[] v = new boolean[26];
+        v[map[0][0]-'A'] = true;
+        dfs(0,0,1,v);
+        System.out.println(maxCnt);
+    }
+
+    public static void dfs(int ci, int cj, int cnt, boolean[] v){
+        if(ci == r && cj == c) {
+            maxCnt =  Math.max(maxCnt, cnt);
+            return;
+        }
+        maxCnt =  Math.max(maxCnt, cnt);
+        int ni,nj;
+        for (int dir = 0; dir < 4; dir++) {
+            ni = ci + di[dir];
+            nj = cj + dj[dir];
+            if(!isOut(ni,nj) && !v[map[ni][nj]-'A']){
+                v[map[ni][nj]-'A']=true;
+                dfs(ni,nj,cnt+1,v);
+                v[map[ni][nj]-'A']=false;
+            }
+        }
+    }
+
+    private static boolean isOut(int ni, int nj){
+        return 0>ni || ni >= r || 0>nj || nj >= c;
+    }
 }
