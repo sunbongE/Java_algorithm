@@ -1,77 +1,61 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
-
+import java.io.*;
+import java.util.*;
 /**
- * 
- * @author 박태호
- * <pre>
- * 
- * 알고리즘 이름은 기억 안나지만
- * make();
- * find();
- * union();
- * 세개의 메서드로 끝장 낼 수 있다.
- * 
- * 
- * - 부모를 기록하는 배열하나. 1~N까지
- * - 
- * </pre>
+ * n 개의 차는 오름차순의 위치로 나온다.
+ * 그래서 i번 위치 차가 이동할 수 있는 위치 범위에 있는지 확인하는 것이 필요한데
+ * i-1위치의 값과 X[i] + H[i] 혹은 X[i] - H[i] 이게 범위내에 있는지 확인..
  *
- */
+ * */
 public class Main {
-	static int parents[],N,M,a,b;
-	public static void main(String[] args) throws IOException {
-		StringBuilder sb = new StringBuilder();
-		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(bf.readLine());
-		N = Integer.parseInt(st.nextToken());
-		M = Integer.parseInt(st.nextToken());
-		make();
-		for (int i = 0; i < M; i++) {
-			st= new StringTokenizer(bf.readLine());
-			if(st.nextToken().equals("0")) {// union()호출
-				a = Integer.parseInt(st.nextToken());
-				b = Integer.parseInt(st.nextToken());
-				union(a,b);
-			}else {// find() 호출
-				a = Integer.parseInt(st.nextToken());
-				b = Integer.parseInt(st.nextToken());
-				if(find(a)==find(b)) {
-					sb.append("YES"+"\n");
-				}else{
-					sb.append("NO"+"\n");
-				};
-			}
-			
-		}
-		System.out.println(sb);
-		
-	}
-	// 부모를 리턴한다.
-	private static int find(int cur) {
-		int parent = parents[cur];
-		if(parent==cur) return cur; // 최상위면 그 값을 리턴한다.
-		return parents[cur]=find(parents[cur]);
-	}
-	
-	
-	private static void make() {
-		parents = new int[N+1];
-		for (int i = 0; i < parents.length; i++) {
-			parents[i]=i;
-		}
-//		System.out.println(Arrays.toString(parents));
-		
-	}
-	private static boolean union(int a , int b ) {
-		int rootA = find(a);
-		int rootB = find(b);
-		
-		if(rootA==rootB) return false;
-		parents[rootB] = rootA;
-		return true;
-	}
+    static int n, m, parents[]; // 각 원소의 부모원소 저장.
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+ //       BufferedReader br = new BufferedReader(new FileReader(new File("./test.txt")));
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());    // 원소 마지막 번호
+        m = Integer.parseInt(st.nextToken());    // 연산 횟수
+
+        parents = initParents();
+        StringBuilder sb = new StringBuilder();
+
+        for (int w = 0; w < m; w++) {
+            st = new StringTokenizer(br.readLine());
+            int command = Integer.parseInt(st.nextToken());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+
+            if(command == 0){
+                union(a,b);
+            }else{
+                if(find(a) == find(b)) sb.append("yes\n");
+                else sb.append("no\n");
+            }
+        }
+        System.out.println(sb);
+    }
+
+    // 두 집합 합치기.
+    private static boolean union(int a, int b){
+        int parentA = find(parents[a]);
+        int parentB = find(parents[b]);
+        if(parentA == parentB) return false;
+        parents[parentB] = parentA;
+
+        return  true;
+    }
+
+    private static int find(int c){
+        if(parents[c] == c) return c;
+        return parents[c]=find(parents[c]);
+    }
+
+    private static int[] initParents() {
+        int[] result = new int[n+1];
+        for (int i = 0; i < result.length; i++) {
+            result[i]=i;
+        }
+        return result;
+    }
 }
