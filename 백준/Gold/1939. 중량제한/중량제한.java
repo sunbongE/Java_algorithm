@@ -4,6 +4,8 @@ import java.util.*;
  * 풀이 이분탐색+bfs
  *
  * 이분탐색으로 1~10만중 s->e 도착할 수 있는 경우 중 최대값을 찾는다.
+ *
+ * v를 매번 생성하면 시간초과 발생 -> vId 변수로 각 버전을 관리하는거 필요함.
  * */
 public class Main {
     static int n,m,s,e;
