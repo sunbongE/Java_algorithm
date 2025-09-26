@@ -2,21 +2,23 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int n, m, s, e;
-    static List<List<Dary>> graph; // 굳이 PQ로 저장할 필요 없음
-    static boolean[] visited;
-
+    static int n,m,s,e;
+    static List<List<Dary>> li;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        //      BufferedReader br = new BufferedReader(new FileReader("./test.txt"));
         StringTokenizer st = new StringTokenizer(br.readLine());
+
 
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
 
-        graph = new ArrayList<>();
+        // 출발지별 PriorityQueue 준비
+        li = new ArrayList<>();
         for (int i = 0; i <= n; i++) {
-            graph.add(new ArrayList<>());
+            li.add(new ArrayList<>());
         }
+
 
         for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
@@ -24,47 +26,58 @@ public class Main {
             int to = Integer.parseInt(st.nextToken());
             int cost = Integer.parseInt(st.nextToken());
 
-            graph.get(from).add(new Dary(to, cost));
-            graph.get(to).add(new Dary(from, cost));
+            // 무향
+            li.get(from).add(new Dary(to, cost));
+            li.get(to).add(new Dary(from, cost));
         }
+
 
         st = new StringTokenizer(br.readLine());
         s = Integer.parseInt(st.nextToken());
         e = Integer.parseInt(st.nextToken());
 
-        System.out.println(daik());
+        int ans = daik();
+
+        System.out.println(ans);
     }
 
-    private static int daik() {
-        PriorityQueue<Dary> pq = new PriorityQueue<>((a, b) -> b.cost - a.cost);
-        visited = new boolean[n + 1];
+    private static int daik(){
+        int ans = 0;
+        PriorityQueue<Dary> q = new PriorityQueue<>((a,b)->{
+            return b.cost - a.cost;
+        });
+        boolean[] v = new boolean[n+1];
+        q.offer(new Dary(s,Integer.MAX_VALUE));
 
-        pq.offer(new Dary(s, Integer.MAX_VALUE));
-
-        while (!pq.isEmpty()) {
-            Dary cur = pq.poll();
+        while(!q.isEmpty()){
+            Dary cur = q.poll();
             int from = cur.to;
 
-            if (visited[from]) continue;
-            visited[from] = true;
+            // 방문체크.
+            if (v[from]) continue; // 이미 방문한거 건너뛰기 
+            v[from] = true;
 
-            if (from == e) return cur.cost;
+            // 도착한거.
+            if(from == e){
+                return cur.cost;
+            }
 
-            for (Dary nd : graph.get(from)) {
-                if (!visited[nd.to]) {
-                    pq.offer(new Dary(nd.to, Math.min(cur.cost, nd.cost)));
+            for(Dary nd : li.get(from)){
+                int to = nd.to;
+                // 비용높은거먼저, 안가본곳이면ㄱ
+                if(!v[to]){ // 미방문 -> 방문.
+                    q.offer(new Dary(to, Math.min(cur.cost,nd.cost) ));
                 }
             }
         }
         return -1;
     }
 
-    static class Dary {
+    static class Dary{
         int to, cost;
-
-        public Dary(int to, int cost) {
-            this.to = to;
-            this.cost = cost;
+        public Dary(int to, int cost){
+            this.to=to;
+            this.cost=cost;
         }
     }
 }
